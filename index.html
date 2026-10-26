@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="BlockBrief — Minecraft updates, snapshots, features and release notes.">
+<title>BlockBrief | Minecraft Update Hub</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --cream: #fffdf5;
+  --white: #ffffff;
+  --green: #668b4e;
+  --light-green: #e7f0dc;
+  --dark-green: #38562e;
+  --brown: #756348;
+  --ink: #39382e;
+  --muted: #888170;
+  --border: #e8dfca;
+  --shadow: 4px 4px 0 #e8dfca;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Nunito', sans-serif;
+}
+
+button, input { font: inherit; }
+
+a { color: inherit; text-decoration: none; }
+
+.pixel {
+  font-family: 'Press Start 2P', monospace;
+  line-height: 1.8;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255,253,245,.96);
+  border-bottom: 3px solid var(--border);
+  padding: 15px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.logo span { color: var(--green); }
+
+.logo-icon { font-size: 26px; vertical-align: middle; }
+
+nav { display: flex; gap: 20px; flex-wrap: wrap; }
+
+nav a { font-weight: 800; font-size: 14px; }
+
+nav a:hover { color: var(--green); }
+
+.hero {
+  padding: 75px 7% 65px;
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, #fffdf5 0%, #f8f4e8 100%);
+  border-bottom: 3px solid var(--border);
+}
+
+.hero::after {
+  content: "⬜ 🟩 ⬜ 🟫 ⬜ 🟩 ⬜ 🟫 ⬜ 🟩";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 19px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  opacity: .7;
+}
+
+.hero-inner { max-width: 950px; margin: auto; }
+
+.tag {
+  display: inline-block;
+  padding: 10px 13px;
+  background: var(--light-green);
+  color: var(--dark-green);
+  border: 2px solid #cadcba;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+h1 {
+  font-size: clamp(35px, 6vw, 66px);
+  line-height: 1.2;
+  margin: 25px 0 15px;
+  letter-spacing: -2px;
+}
+
+h1 span { color: var(--green); }
+
+.hero p {
+  max-width: 600px;
+  color: var(--brown);
+  line-height: 1.9;
+  font-size: 17px;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 25px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 13px 17px;
+  border: 2px solid var(--dark-green);
+  background: var(--white);
+  color: var(--dark-green);
+  box-shadow: 3px 3px 0 #c9d8bc;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+}
+
+.btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #c9d8bc;
+}
+
+.btn.primary {
+  background: var(--green);
+  color: white;
+  border-color: var(--dark-green);
+}
+
+.hero-blocks {
+  display: flex;
+  gap: 12px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.block {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  background: #e6eedc;
+  border: 3px solid #cbdabc;
+  box-shadow: 4px 4px 0 #e7dfca;
+}
+
+main { max-width: 1250px; margin: auto; padding: 45px 6% 70px; }
+
+.section-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: clamp(19px, 3vw, 27px);
+  margin: 0;
+}
+
+.search {
+  padding: 13px 15px;
+  width: min(100%, 300px);
+  background: white;
+  border: 2px solid var(--border);
+  outline: none;
+}
+
+.search:focus { border-color: var(--green); }
+
+.filters { display: flex; flex-wrap: wrap; gap: 9px; margin: 22px 0 28px; }
+
+.filter {
+  padding: 10px 13px;
+  background: white;
+  border: 2px solid var(--border);
+  color: var(--brown);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.filter.active {
+  background: var(--light-green);
+  color: var(--dark-green);
+  border-color: var(--green);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 23px;
+  transition: transform .15s, box-shadow .15s;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #e8dfca;
+}
+
+.card-icon {
+  width: 58px;
+  height: 58px;
+  background: var(--light-green);
+  border: 2px solid #cfdec1;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  margin-bottom: 18px;
+}
+
+.category {
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.card h3 { font-size: 20px; margin: 10px 0; line-height: 1.4; }
+
+.card p { color: var(--muted); line-height: 1.8; font-size: 14px; flex: 1; }
+
+.card-link {
+  margin-top: 12px;
+  color: var(--dark-green);
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.card-link:hover { text-decoration: underline; }
+
+.status {
+  display: inline-block;
+  padding: 5px 8px;
+  background: #f7f0dd;
+  color: #856d36;
+  font-size: 10px;
+  font-weight: 900;
+  margin-top: 10px;
+}
+
+.note {
+  margin-top: 35px;
+  padding: 22px;
+  border: 2px dashed #c8d8b9;
+  background: #f5f8ee;
+  line-height: 1.8;
+  color: var(--brown);
+}
+
+.note strong { color: var(--dark-green); }
+
+.editions {
+  margin-top: 65px;
+}
+
+.edition-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.edition {
+  padding: 25px;
+  border: 2px solid var(--border);
+  background: #fff;
+}
+
+.edition h3 { margin-top: 0; }
+
+.edition p { color: var(--muted); line-height: 1.7; }
+
+footer {
+  border-top: 3px solid var(--border);
+  padding: 30px 6%;
+  text-align: center;
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 13px;
+}
+
+footer a { color: var(--dark-green); font-weight: 900; }
+
+.hidden { display: none !important; }
+
+@media (max-width: 560px) {
+  header { padding: 14px 5%; }
+  .hero { padding: 48px 5% 60px; }
+  main { padding: 35px 5% 50px; }
+  nav { gap: 13px; }
+  .logo { font-size: 18px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <a href="#" class="logo"><span class="logo-icon">⛏️</span> Block<span>Brief</span></a>
+  <nav>
+    <a href="#updates">Updates</a>
+    <a href="#editions">Editions</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="tag">✦ YOUR MINECRAFT NEWS BLOCK</span>
+    <h1>Stay in the loop.<br><span>Block by block.</span></h1>
+    <p>
+      New features, game drops, snapshots and patch notes.
+      Explore the latest Minecraft news in one friendly place.
+    </p>
+    <div class="buttons">
+      <a href="#updates" class="btn primary">Explore Updates →</a>
+      <a href="https://www.minecraft.net/en-us/updates" target="_blank" rel="noopener" class="btn">Official News ↗</a>
+    </div>
+    <div class="hero-blocks" aria-label="Minecraft inspired blocks">
+      <div class="block">🌱</div>
+      <div class="block">🪨</div>
+      <div class="block">💎</div>
+      <div class="block">🪵</div>
+      <div class="block">🌷</div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <section id="updates">
+    <div class="section-top">
+      <h2 class="section-title pixel">UPDATE BOARD</h2>
+      <input class="search" id="search" type="search" placeholder="🔎 Search updates..." aria-label="Search updates">
+    </div>
+
+    <div class="filters">
+      <button class="filter active" data-filter="All">All Updates</button>
+      <button class="filter" data-filter="Java">Java Edition</button>
+      <button class="filter" data-filter="Bedrock">Bedrock Edition</button>
+      <button class="filter" data-filter="Snapshot">Snapshots</button>
+    </div>
+
+    <div class="grid" id="feed">
+      <article class="card" data-category="All">
+        <div class="card-icon">📰</div>
+        <span class="category">OFFICIAL SOURCE</span>
+        <h3>Minecraft Update News</h3>
+        <p>Visit the official Minecraft news page to explore the latest announcements, game drops and release news.</p>
+        <a class="card-link" href="https://www.minecraft.net/en-us/updates" target="_blank" rel="noopener">Read official news ↗</a>
+        <span class="status">OFFICIAL WEBSITE</span>
+      </article>
+
+      <article class="card" data-category="Java Snapshot">
+        <div class="card-icon">⚒️</div>
+        <span class="category">JAVA EDITION</span>
+        <h3>Snapshots & Pre-releases</h3>
+        <p>Explore Java Edition testing builds and their change lists before releases arrive.</p>
+        <a class="card-link" href="https://www.minecraft.net/en-us/articles" target="_blank" rel="noopener">Explore articles ↗</a>
+        <span class="status">TEST BUILDS</span>
+      </article>
+
+      <article class="card" data-category="Bedrock">
+        <div class="card-icon">🧱</div>
+        <span class="category">BEDROCK EDITION</span>
+        <h3>Bedrock Changelogs</h3>
+        <p>Find Bedrock Edition release notes, fixes and gameplay changes in the official changelog archive.</p>
+        <a class="card-link" href="https://feedback.minecraft.net/hc/en-us/sections/360001186971" target="_blank" rel="noopener">Browse changelogs ↗</a>
+        <span class="status">RELEASE NOTES</span>
+      </article>
+
+      <article class="card" data-category="Java Snapshot">
+        <div class="card-icon">🧪</div>
+        <span class="category">JAVA SNAPSHOTS</span>
+        <h3>Snapshot Changelogs</h3>
+        <p>Find official snapshot notes, experimental features and fixes for Java Edition.</p>
+        <a class="card-link" href="https://feedback.minecraft.net/hc/en-us/sections/360002267532" target="_blank" rel="noopener">Read snapshot notes ↗</a>
+        <span class="status">DEVELOPMENT</span>
+      </article>
+
+      <article class="card" data-category="All">
+        <div class="card-icon">📚</div>
+        <span class="category">GAME HISTORY</span>
+        <h3>Minecraft Update Timeline</h3>
+        <p>Explore the game's evolution and the major updates that have shaped Minecraft.</p>
+        <a class="card-link" href="https://www.minecraft.net/en-us/updates/minecraft-updates-timeline-and-evolution" target="_blank" rel="noopener">Explore timeline ↗</a>
+        <span class="status">TIMELINE</span>
+      </article>
+
+      <article class="card" data-category="All">
+        <div class="card-icon">💡</div>
+        <span class="category">NEW FEATURES</span>
+        <h3>Discover What's New</h3>
+        <p>Use official announcements to discover new mobs, blocks, items, mechanics and quality-of-life changes.</p>
+        <a class="card-link" href="https://www.minecraft.net/en-us" target="_blank" rel="noopener">Explore Minecraft ↗</a>
+        <span class="status">DISCOVER</span>
+      </article>
+    </div>
+
+    <p id="empty" class="hidden">No matching cards found. Try another search.</p>
+
+    <div class="note">
+      <strong>🌿 A quick note:</strong> These cards link to official Minecraft sources.
+      This first version does not yet automatically import new release notes.
+      We'll add an automatic update feed in a later step.
+    </div>
+  </section>
+
+  <section class="editions" id="editions">
+    <h2 class="section-title pixel">PICK YOUR EDITION</h2>
+    <div class="edition-grid">
+      <div class="edition">
+        <div class="card-icon">🖥️</div>
+        <h3>Java Edition</h3>
+        <p>Snapshots, pre-releases, version updates and Java-specific changes.</p>
+        <a class="card-link" href="https://feedback.minecraft.net/hc/en-us/sections/360002267532" target="_blank" rel="noopener">Java snapshot notes ↗</a>
+      </div>
+      <div class="edition">
+        <div class="card-icon">📱</div>
+        <h3>Bedrock Edition</h3>
+        <p>Release notes and fixes for supported Bedrock platforms.</p>
+        <a class="card-link" href="https://www.minecraft.net/en-us/updates" target="_blank" rel="noopener">Official updates ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="editions" id="about">
+    <h2 class="section-title pixel">ABOUT BLOCKBRIEF</h2>
+    <p style="line-height:1.9;color:var(--brown);max-width:700px">
+      BlockBrief is an independent fan-made Minecraft update hub designed to make
+      update news easier to explore. Minecraft is a trademark of Microsoft/Mojang.
+      BlockBrief is not an official Minecraft website and is not affiliated with Mojang or Microsoft.
+    </p>
+  </section>
+</main>
+
+<footer>
+  <div class="logo">⛏️ Block<span>Brief</span></div>
+  Made for Minecraft fans, block by block.<br>
+  <a href="https://www.minecraft.net/en-us/updates" target="_blank" rel="noopener">Check official Minecraft news ↗</a>
+</footer>
+
+<script>
+const search = document.getElementById('search');
+const cards = [...document.querySelectorAll('#feed .card')];
+const filters = [...document.querySelectorAll('.filter')];
+const empty = document.getElementById('empty');
+let activeFilter = 'All';
+
+function updateCards() {
+  const query = search.value.toLowerCase().trim();
+  let visible = 0;
+
+  cards.forEach(card => {
+    const category = card.dataset.category || 'All';
+    const matchesFilter =
+      activeFilter === 'All' ||
+      category.split(' ').includes(activeFilter);
+
+    const matchesSearch = card.innerText.toLowerCase().includes(query);
+    const show = matchesFilter && matchesSearch;
+
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+
+  empty.classList.toggle('hidden', visible !== 0);
+}
+
+search.addEventListener('input', updateCards);
+
+filters.forEach(button => {
+  button.addEventListener('click', () => {
+    activeFilter = button.dataset.filter;
+
+    filters.forEach(item =>
+      item.classList.toggle('active', item === button)
+    );
+
+    updateCards();
+  });
+});
+</script>
+</body>
+</html>
